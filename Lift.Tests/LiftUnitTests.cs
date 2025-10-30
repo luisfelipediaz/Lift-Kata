@@ -73,9 +73,24 @@ public class LiftUnitTests
 
         lift.Request(2);
         lift.Tick();
-        
+
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Lift_MoveToRequestFloorAndOpenDoors()
+    {
+        var lift = new Lift();
+        
+        lift.Request(4);
+        lift.Tick();
+        lift.Tick();
+        lift.Tick();
+        lift.Tick();
+        
+        lift.CurrentFloor.Should().Be(4);
+        lift.AreDoorsOpen.Should().BeTrue();
     }
 }
 
@@ -106,7 +121,6 @@ public class Lift
 
     public void Request(int i)
     {
-        
     }
 
     public void Tick()
