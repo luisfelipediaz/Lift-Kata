@@ -189,6 +189,6 @@ public class Lift(int initialFloor = 1)
 
     public bool HasPendingRequest()
     {
-        return false;
+        return _request != CurrentFloor;
     }
 }
