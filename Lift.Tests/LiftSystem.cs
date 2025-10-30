@@ -36,7 +36,7 @@ public class LiftSystem(Lift lift)
     private bool IsOnTheRequestedFloor() => lift.IsInFloor(_request);
     private void ClearRequest() => _request = 0;
 
-    public void Call(int i)
+    public void Call(int floor)
     {
         lift.MoveUp();
     }
