@@ -109,11 +109,11 @@ public class LiftUnitTests
     public void Lift_FinishTheRequest_When_ArriveToDetinationAndOpenTheDoors()
     {
         var lift = new Lift();
-        
+
         lift.Request(2);
         lift.Tick();
         lift.Tick();
-        
+
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeTrue();
         lift.HasPendingRequest().Should().BeFalse();
@@ -123,10 +123,10 @@ public class LiftUnitTests
     public void Lift_ShouldNotFinishTheRequest_When_DidntArriveToTheRequestedFloor()
     {
         var lift = new Lift();
-        
+
         lift.Request(3);
         lift.Tick();
-        
+
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeFalse();
         lift.HasPendingRequest().Should().BeTrue();
@@ -136,10 +136,10 @@ public class LiftUnitTests
     public void Lift_ShouldNotFinishTheRequest_When_ArriveToTheRequestedFloorButDidNotOpenTheDoors()
     {
         var lift = new Lift();
-        
+
         lift.Request(2);
         lift.Tick();
-        
+
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeFalse();
         lift.HasPendingRequest().Should().BeTrue();
@@ -179,14 +179,17 @@ public class Lift(int initialFloor = 1)
 
     public void Tick()
     {
-        if (CurrentFloor == _request)
+        if (IsOnTheRequestedFloor())
         {
-            AreDoorsOpen = true;
+            OpenDoors();
+            ClearRequest();
             return;
         }
 
         Move();
     }
+
+    public bool HasPendingRequest() => _request != 0;
 
     private void Move()
     {
@@ -196,12 +199,8 @@ public class Lift(int initialFloor = 1)
             MoveUp();
     }
 
+    private bool IsOnTheRequestedFloor() => CurrentFloor == _request;
+    private void ClearRequest() => _request = 0;
     private void MoveUp() => CurrentFloor++;
-
     private void MoveDown() => CurrentFloor--;
-
-    public bool HasPendingRequest()
-    {
-        return _request != CurrentFloor || !AreDoorsOpen;
-    }
 }
