@@ -241,7 +241,7 @@ public class LiftSystemUnitTests
         system.Tick();
 
         system.HasNoPendingCalls().Should().BeTrue();
-        lift.IsInFloor(5).Should().BeTrue();
+        lift.IsInFloor(5).Should().BeTrue();    
         lift.AreDoorsOpen.Should().BeTrue();
     }
 }

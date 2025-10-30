@@ -43,7 +43,8 @@ public class LiftSystem(Lift lift)
         }
         else
         {
-            lift.MoveUp();
+            if (lift.CurrentFloor > _call) lift.MoveDown();
+            else lift.MoveUp();
         }
     }
 
