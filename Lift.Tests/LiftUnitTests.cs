@@ -2,7 +2,7 @@ using AwesomeAssertions;
 
 namespace Lift.Tests;
 
-public class UnitTest1
+public class LiftUnitTests
 {
     [Fact]
     public void Lift_CanOpenDoors()
