@@ -145,6 +145,9 @@ public class Lift(int initialFloor = 1)
             return;
         }
 
-        CurrentFloor++;
+        if (CurrentFloor > _request)
+            CurrentFloor--;
+        else
+            CurrentFloor++;
     }
 }
