@@ -1,10 +1,25 @@
+using AwesomeAssertions;
+
 namespace Lift.Tests;
 
 public class UnitTest1
 {
     [Fact]
-    public void Test1()
+    public void Lift_CanOpenDoors()
     {
-        Assert.True(true);
+        var lift = new Lift();
+
+        lift.OpenDoors();
+
+        lift.AreDoorsOpen.Should().BeTrue();
     }
+}
+
+public class Lift
+{
+    public void OpenDoors()
+    {
+    }
+
+    public bool AreDoorsOpen { get; private set; }
 }
