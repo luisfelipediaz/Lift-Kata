@@ -176,6 +176,6 @@ public class Lift(int initialFloor = 1)
 
     public bool HasPendingRequest()
     {
-        throw new NotImplementedException();
+        return false;
     }
 }
