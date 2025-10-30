@@ -193,4 +193,21 @@ public class LiftSystemUnitTests
         system.HasNoPendingCalls().Should().BeTrue();
         lift.IsInFloor(4).Should().BeTrue();
     }
+
+    [Fact]
+    public void LiftSystem_ShouldCloseTheDoorsBeforeToStartACall()
+    {
+        var lift = new Lift();
+        var system = new LiftSystem(lift);
+        
+        system.Call(2);
+        system.Tick();
+        system.Tick();
+        system.Call(5);
+        system.Tick();
+        system.Tick();
+        
+        lift.IsInFloor(3).Should().BeTrue();
+        lift.AreDoorsOpen.Should().BeFalse();
+    }
 }

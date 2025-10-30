@@ -4,7 +4,7 @@ public class LiftSystem(Lift lift)
 {
     private int _request;
     private int _call;
-    
+
     public bool HasNoPendingCalls() => _call == 0;
     public bool HasNoPendingRequest() => _request == 0;
 
@@ -35,7 +35,7 @@ public class LiftSystem(Lift lift)
         if (IsOnTheCalledFloor())
         {
             lift.OpenDoors();
-            _call = 0;
+            ClearCall();
             return;
         }
 
@@ -63,9 +63,10 @@ public class LiftSystem(Lift lift)
         else lift.MoveUp();
     }
 
-    
+
     private bool ShouldMoveDown() => lift.CurrentFloor > _request;
     private bool IsOnTheCalledFloor() => lift.IsInFloor(_call);
     private bool IsOnTheRequestedFloor() => lift.IsInFloor(_request);
     private void ClearRequest() => _request = 0;
+    private void ClearCall() => _call = 0;
 }
