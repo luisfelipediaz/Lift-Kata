@@ -3,9 +3,8 @@ namespace Lift.Tests;
 public class LiftSystem(Lift lift)
 {
     private int _request;
-    private int _call;
 
-    public bool HasNoPendingCalls() => _call == 0;
+    public bool HasNoPendingCalls() => _request == 0;
     public bool HasNoPendingRequest() => _request == 0;
 
     public void Request(int floor)
@@ -17,38 +16,10 @@ public class LiftSystem(Lift lift)
 
     public void Call(int floor)
     {
-        if (HasNoPendingRequest())
-            _call = floor;
-        else throw new InvalidOperationException();
+        Request(floor);
     }
 
     public void Tick()
-    {
-        ProcessCalls();
-        ProcessRequests();
-    }
-
-    private void ProcessCalls()
-    {
-        if (HasNoPendingCalls()) return;
-
-        if (IsOnTheCalledFloor())
-        {
-            lift.OpenDoors();
-            ClearCall();
-        }
-        else if (lift.AreDoorsOpen)
-        {
-            lift.CloseDoors();
-        }
-        else
-        {
-            if (lift.CurrentFloor > _call) lift.MoveDown();
-            else lift.MoveUp();
-        }
-    }
-
-    private void ProcessRequests()
     {
         if (HasNoPendingRequest()) return;
         if (IsOnTheRequestedFloor())
@@ -72,10 +43,7 @@ public class LiftSystem(Lift lift)
         else lift.MoveUp();
     }
 
-
     private bool ShouldMoveDown() => lift.CurrentFloor > _request;
-    private bool IsOnTheCalledFloor() => lift.IsInFloor(_call);
     private bool IsOnTheRequestedFloor() => lift.IsInFloor(_request);
     private void ClearRequest() => _request = 0;
-    private void ClearCall() => _call = 0;
 }
