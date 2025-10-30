@@ -67,7 +67,7 @@ public class LiftUnitTests
     }
 
     [Fact]
-    public void Lift_MovesToRequestFloor()
+    public void Lift_MovesToRequestedFloor()
     {
         var lift = new Lift();
 
@@ -79,32 +79,43 @@ public class LiftUnitTests
     }
 
     [Fact]
-    public void Lift_MoveToRequestFloorAndOpenDoors()
+    public void Lift_MovesToRequestedFloorAndOpenDoors()
     {
         var lift = new Lift();
-        
+
         lift.Request(4);
         lift.Tick();
         lift.Tick();
         lift.Tick();
         lift.Tick();
-        
+
         lift.CurrentFloor.Should().Be(4);
         lift.AreDoorsOpen.Should().BeTrue();
     }
+
+    [Fact]
+    public void List_MovesToRequestedFloor_BelowToInitialFloor()
+    {
+        var lift = new Lift(initialFloor: 7);
+
+        lift.Request(1);
+        lift.Tick();
+
+        lift.CurrentFloor.Should().Be(6);
+        lift.AreDoorsOpen.Should().BeFalse();
+    }
 }
 
-public class Lift
+public class Lift(int initialFloor = 1)
 {
     private const int MaxFloor = 10;
     private int _request;
     public bool AreDoorsOpen { get; private set; }
-    public int CurrentFloor { get; private set; } = 1;
+    public int CurrentFloor { get; private set; } = initialFloor;
 
     public void OpenDoors()
     {
         AreDoorsOpen = true;
-        
     }
 
     public void CloseDoors()
@@ -133,7 +144,7 @@ public class Lift
             AreDoorsOpen = true;
             return;
         }
+
         CurrentFloor++;
-        
     }
 }
