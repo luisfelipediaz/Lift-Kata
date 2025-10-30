@@ -97,12 +97,14 @@ public class LiftUnitTests
 public class Lift
 {
     private const int MaxFloor = 10;
+    private int _request;
     public bool AreDoorsOpen { get; private set; }
-    public int CurrentFloor { get; private set; }
+    public int CurrentFloor { get; private set; } = 1;
 
     public void OpenDoors()
     {
         AreDoorsOpen = true;
+        
     }
 
     public void CloseDoors()
@@ -121,10 +123,17 @@ public class Lift
 
     public void Request(int i)
     {
+        _request = i;
     }
 
     public void Tick()
     {
-        CurrentFloor = 2;
+        if (CurrentFloor == _request)
+        {
+            AreDoorsOpen = true;
+            return;
+        }
+        CurrentFloor++;
+        
     }
 }
