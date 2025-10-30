@@ -85,6 +85,7 @@ public class Lift
     public void MoveTo(int floor)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(floor);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, 10);
         if (AreDoorsOpen)
             throw new InvalidOperationException();
         CurrentFloor = floor;
