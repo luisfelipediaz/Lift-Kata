@@ -69,6 +69,7 @@ public class LiftUnitTests
 
 public class Lift
 {
+    private const int MAX_FLOOR = 10;
     public bool AreDoorsOpen { get; private set; }
     public int CurrentFloor { get; private set; }
 
@@ -85,7 +86,7 @@ public class Lift
     public void MoveTo(int floor)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(floor);
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, 10);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, MAX_FLOOR);
         if (AreDoorsOpen)
             throw new InvalidOperationException();
         CurrentFloor = floor;
