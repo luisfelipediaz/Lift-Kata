@@ -25,43 +25,65 @@ public class LiftUnitTests
         lift.AreDoorsOpen.Should().BeFalse();
     }
 
+
     [Fact]
-    public void Lift_CanMove()
+    public void Lift_CanMoveUpOneFloorAtTime()
     {
         var lift = new Lift();
 
-        lift.MoveTo(3);
+        lift.MoveUp();
 
-        lift.CurrentFloor.Should().Be(3);
+        lift.CurrentFloor.Should().Be(2);
     }
 
     [Fact]
-    public void Lift_CantMoveIfTheDoorsAreOpen()
+    public void Lift_CanMoveDownOneFloorAtTime()
+    {
+        var lift = new Lift(initialFloor: 2);
+
+        lift.MoveDown();
+
+        lift.CurrentFloor.Should().Be(1);
+    }
+
+    [Fact]
+    public void Lift_CantMoveUpIfTheDoorsAreOpen()
     {
         var lift = new Lift();
         lift.OpenDoors();
 
-        var caller = () => lift.MoveTo(5);
+        var caller = () => lift.MoveUp();
 
         caller.Should().Throw<InvalidOperationException>();
     }
 
     [Fact]
-    public void Lift_CantMoveOutOfTheBoundries()
+    public void Lift_CantMoveDownIfTheDoorsAreOpen()
+    {
+        var lift = new Lift(initialFloor: 8);
+        lift.OpenDoors();
+
+        var caller = () => lift.MoveDown();
+
+        caller.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void Lift_CantMoveDownOutOfTheBoundries()
     {
         var lift = new Lift();
 
-        var caller = () => lift.MoveTo(-1);
+        var caller = () => lift.MoveDown();
 
         caller.Should().Throw<ArgumentOutOfRangeException>();
     }
 
     [Fact]
-    public void Lift_CantMoveOutOfTheBoundriesAbove()
+    public void Lift_CantMoveUpOutOfTheBoundries()
     {
-        var lift = new Lift();
+        var lift = new Lift(initialFloor: 10);
 
-        var caller = () => lift.MoveTo(11);
+        var caller = () => lift.MoveUp();
 
         caller.Should().Throw<ArgumentOutOfRangeException>();
     }
@@ -149,6 +171,7 @@ public class LiftUnitTests
 public class Lift(int initialFloor = 1)
 {
     private const int MaxFloor = 10;
+    private const int MinFloor = 1;
     private int _request;
     public bool AreDoorsOpen { get; private set; }
     public int CurrentFloor { get; private set; } = initialFloor;
@@ -163,9 +186,12 @@ public class Lift(int initialFloor = 1)
         AreDoorsOpen = false;
     }
 
-    public void MoveTo(int floor)
+    public void MoveUp() => MoveTo(CurrentFloor + 1);
+    public void MoveDown() => MoveTo(CurrentFloor - 1);
+
+    private void MoveTo(int floor)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(floor);
+        ArgumentOutOfRangeException.ThrowIfLessThan(floor, MinFloor);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, MaxFloor);
         if (AreDoorsOpen)
             throw new InvalidOperationException();
@@ -201,6 +227,4 @@ public class Lift(int initialFloor = 1)
 
     private bool IsOnTheRequestedFloor() => CurrentFloor == _request;
     private void ClearRequest() => _request = 0;
-    private void MoveUp() => CurrentFloor++;
-    private void MoveDown() => CurrentFloor--;
 }
