@@ -121,9 +121,9 @@ public class Lift
         CurrentFloor = floor;
     }
 
-    public void Request(int i)
+    public void Request(int floor)
     {
-        _request = i;
+        _request = floor;
     }
 
     public void Tick()
