@@ -3,19 +3,32 @@ namespace Lift.Tests;
 public class LiftSystem(Lift lift)
 {
     private int _request;
+    private int _call;
 
     public void Request(int floor)
     {
         _request = floor;
     }
-    
+
     public void Call(int floor)
     {
-        lift.MoveUp();
+        _call = floor;
     }
 
     public void Tick()
     {
+        if (_call != 0)
+        {
+            if (lift.IsInFloor(_call))
+            {
+                lift.OpenDoors();
+                return;
+            }
+            else
+            {
+                lift.MoveUp();
+            }
+        }
         if (!HasPendingRequest()) return;
         if (IsOnTheRequestedFloor())
         {
