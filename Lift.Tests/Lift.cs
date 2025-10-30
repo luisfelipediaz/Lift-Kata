@@ -10,6 +10,8 @@ public class Lift(int initialFloor = 1)
     public void OpenDoors() => AreDoorsOpen = true;
     public void MoveUp() => MoveTo(CurrentFloor + 1);
     public void MoveDown() => MoveTo(CurrentFloor - 1);
+    public bool IsInFloor(int floor) => CurrentFloor == floor;
+
     private void MoveTo(int floor)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(floor, MinFloor);
@@ -19,4 +21,5 @@ public class Lift(int initialFloor = 1)
         CurrentFloor = floor;
     }
 
+    
 }

@@ -28,12 +28,11 @@ public class LiftSystem(Lift lift)
 
     private void MoveLift()
     {
-        if (lift.CurrentFloor > _request)
-            lift.MoveDown();
-        else
-            lift.MoveUp();
+        if (ShouldMoveDown()) lift.MoveDown();
+        else lift.MoveUp();
     }
 
-    private bool IsOnTheRequestedFloor() => lift.CurrentFloor == _request;
+    private bool ShouldMoveDown() => lift.CurrentFloor > _request;
+    private bool IsOnTheRequestedFloor() => lift.IsInFloor(_request);
     private void ClearRequest() => _request = 0;
 }
