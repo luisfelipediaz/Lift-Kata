@@ -8,6 +8,11 @@ public class LiftSystem(Lift lift)
     {
         _request = floor;
     }
+    
+    public void Call(int floor)
+    {
+        lift.MoveUp();
+    }
 
     public void Tick()
     {
@@ -35,9 +40,4 @@ public class LiftSystem(Lift lift)
     private bool ShouldMoveDown() => lift.CurrentFloor > _request;
     private bool IsOnTheRequestedFloor() => lift.IsInFloor(_request);
     private void ClearRequest() => _request = 0;
-
-    public void Call(int floor)
-    {
-        lift.MoveUp();
-    }
 }
