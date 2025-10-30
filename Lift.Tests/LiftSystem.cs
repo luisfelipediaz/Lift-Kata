@@ -15,23 +15,24 @@ public class LiftSystem(Lift lift)
         {
             lift.OpenDoors();
             ClearRequest();
-            return;
         }
-
-        lift.CloseDoors();
-        Move();
+        else
+        {
+            lift.CloseDoors();
+            MoveLift();
+        }
     }
 
     public bool HasPendingRequest() => _request != 0;
 
-    private void Move()
+    private void MoveLift()
     {
         if (lift.CurrentFloor > _request)
             lift.MoveDown();
         else
             lift.MoveUp();
     }
-    
+
     private bool IsOnTheRequestedFloor() => lift.CurrentFloor == _request;
     private void ClearRequest() => _request = 0;
 }
