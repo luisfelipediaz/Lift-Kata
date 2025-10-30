@@ -163,4 +163,17 @@ public class LiftSystemUnitTests
         
         caller.Should().ThrowExactly<InvalidOperationException>();
     }
+
+    [Fact]
+    public void LiftSystem_CantHandlerACall_While_HasARequest()
+    {
+        var lift = new Lift();
+        var system = new LiftSystem(lift);
+        var caller = () => system.Call(7);
+        system.Request(4);
+        system.Tick();
+        system.Tick();
+        
+        caller.Should().ThrowExactly<InvalidOperationException>();
+    }
 }
