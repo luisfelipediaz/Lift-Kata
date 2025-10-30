@@ -13,14 +13,29 @@ public class UnitTest1
 
         lift.AreDoorsOpen.Should().BeTrue();
     }
+
+    [Fact]
+    public void Lift_CanCloseDoors()
+    {
+        var lift = new Lift();
+        lift.OpenDoors();
+
+        lift.CloseDoors();
+        
+        lift.AreDoorsOpen.Should().BeFalse();
+    }
 }
 
 public class Lift
 {
+    public bool AreDoorsOpen { get; private set; }
+    
     public void OpenDoors()
     {
         AreDoorsOpen = true;
     }
 
-    public bool AreDoorsOpen { get; private set; }
+    public void CloseDoors()
+    {
+    }
 }
