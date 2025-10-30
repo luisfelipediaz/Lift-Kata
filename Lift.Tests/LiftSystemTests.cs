@@ -228,4 +228,20 @@ public class LiftSystemUnitTests
         lift.IsInFloor(3).Should().BeTrue();
         lift.AreDoorsOpen.Should().BeFalse();
     }
+
+    [Fact]
+    public void List_MovesToCalledFloor_BelowToInitialFloor()
+    {
+        var lift = new Lift(initialFloor: 7);
+        var system = new LiftSystem(lift);
+        
+        system.Call(5);
+        system.Tick();
+        system.Tick();
+        system.Tick();
+
+        system.HasNoPendingCalls().Should().BeTrue();
+        lift.IsInFloor(5).Should().BeTrue();
+        lift.AreDoorsOpen.Should().BeTrue();
+    }
 }
