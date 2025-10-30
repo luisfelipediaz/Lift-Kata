@@ -4,6 +4,9 @@ public class LiftSystem(Lift lift)
 {
     private int _request;
     private int _call;
+    
+    public bool HasNoPendingCalls() => _call == 0;
+    public bool HasNoPendingRequest() => _request == 0;
 
     public void Request(int floor)
     {
@@ -14,7 +17,9 @@ public class LiftSystem(Lift lift)
 
     public void Call(int floor)
     {
-        _call = floor;
+        if (HasNoPendingRequest())
+            _call = floor;
+        else throw new InvalidOperationException();
     }
 
     public void Tick()
@@ -57,8 +62,7 @@ public class LiftSystem(Lift lift)
         else lift.MoveUp();
     }
 
-    private bool HasNoPendingCalls() => _call == 0;
-    public bool HasNoPendingRequest() => _request == 0;
+    
     private bool ShouldMoveDown() => lift.CurrentFloor > _request;
     private bool IsOnTheCalledFloor() => lift.IsInFloor(_call);
     private bool IsOnTheRequestedFloor() => lift.IsInFloor(_request);

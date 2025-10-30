@@ -176,4 +176,21 @@ public class LiftSystemUnitTests
         
         caller.Should().ThrowExactly<InvalidOperationException>();
     }
+
+    [Fact]
+    public void LiftSystem_ShouldDoNothing_When_FinishACall_And_ThereIsNoMoreCalls()
+    {
+        var lift = new Lift();
+        var system = new LiftSystem(lift);
+        
+        system.Call(4);
+        system.Tick();
+        system.Tick();
+        system.Tick();
+        system.Tick();
+        system.Tick();
+
+        system.HasNoPendingCalls().Should().BeTrue();
+        lift.IsInFloor(4).Should().BeTrue();
+    }
 }
