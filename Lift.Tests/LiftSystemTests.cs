@@ -101,6 +101,7 @@ public class LiftSystemUnitTests
         system.Request(1);
         system.Tick();
         system.Tick();
+        system.Tick();
 
         lift.CurrentFloor.Should().Be(1);
         lift.AreDoorsOpen.Should().BeTrue();

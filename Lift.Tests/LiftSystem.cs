@@ -50,9 +50,12 @@ public class LiftSystem(Lift lift)
             lift.OpenDoors();
             ClearRequest();
         }
-        else
+        else if (lift.AreDoorsOpen)
         {
             lift.CloseDoors();
+        }
+        else
+        {
             MoveLift();
         }
     }
