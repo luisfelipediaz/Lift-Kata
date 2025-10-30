@@ -94,15 +94,31 @@ public class LiftSystemUnitTests
     {
         var lift = new Lift();
         var system = new LiftSystem(lift);
-        
+
         system.Request(2);
         system.Tick();
         system.Tick();
         system.Request(1);
         system.Tick();
         system.Tick();
-        
+
         lift.CurrentFloor.Should().Be(1);
+        lift.AreDoorsOpen.Should().BeTrue();
+    }
+
+    [Fact]
+    public void LiftSystem_ShouldDoNothing_When_FinishARequest_And_ThereIsNoMoreRequest()
+    {
+        var lift = new Lift();
+        var system = new LiftSystem(lift);
+        
+        system.Request(2);
+        system.Tick();
+        system.Tick();
+        system.Tick();
+
+        system.HasPendingRequest().Should().BeFalse();
+        lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeTrue();
     }
 }
