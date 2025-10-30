@@ -38,6 +38,6 @@ public class LiftSystem(Lift lift)
 
     public void Call(int i)
     {
-        throw new NotImplementedException();
+        lift.MoveUp();
     }
 }
