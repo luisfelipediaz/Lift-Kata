@@ -24,12 +24,23 @@ public class LiftUnitTests
         
         lift.AreDoorsOpen.Should().BeFalse();
     }
+
+    [Fact]
+    public void Lift_CanMove()
+    {
+        var lift = new Lift();
+
+        lift.MoveTo(3);
+
+        lift.CurrentFloor.Should().Be(3);
+    }
 }
 
 public class Lift
 {
     public bool AreDoorsOpen { get; private set; }
-    
+    public object CurrentFloor { get; set; }
+
     public void OpenDoors()
     {
         AreDoorsOpen = true;
@@ -38,5 +49,10 @@ public class Lift
     public void CloseDoors()
     {
         AreDoorsOpen = false;
+    }
+
+    public void MoveTo(int i)
+    {
+        
     }
 }
