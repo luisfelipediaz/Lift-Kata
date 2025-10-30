@@ -55,6 +55,16 @@ public class LiftUnitTests
         
         caller.Should().Throw<ArgumentOutOfRangeException>();
     }
+
+    [Fact]
+    public void Lift_CantMoveOutOfTheBoundriesAbove()
+    {
+        var lift = new Lift();
+
+        var caller = () => lift.MoveTo(11);
+        
+        caller.Should().Throw<ArgumentOutOfRangeException>();
+    }
 }
 
 public class Lift
