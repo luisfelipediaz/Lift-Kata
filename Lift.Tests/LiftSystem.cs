@@ -36,10 +36,11 @@ public class LiftSystem(Lift lift)
         {
             lift.OpenDoors();
             ClearCall();
-            return;
         }
-
-        lift.MoveUp();
+        else
+        {
+            lift.MoveUp();
+        }
     }
 
     private void ProcessRequests()
