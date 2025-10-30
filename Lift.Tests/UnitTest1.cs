@@ -37,5 +37,6 @@ public class Lift
 
     public void CloseDoors()
     {
+        AreDoorsOpen = false;
     }
 }
