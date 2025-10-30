@@ -39,7 +39,7 @@ public class LiftUnitTests
 public class Lift
 {
     public bool AreDoorsOpen { get; private set; }
-    public object CurrentFloor { get; set; }
+    public object CurrentFloor { get; private set; }
 
     public void OpenDoors()
     {
@@ -53,6 +53,6 @@ public class Lift
 
     public void MoveTo(int i)
     {
-        
+        CurrentFloor = i;
     }
 }
