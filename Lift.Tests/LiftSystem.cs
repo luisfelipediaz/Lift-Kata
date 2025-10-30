@@ -7,7 +7,9 @@ public class LiftSystem(Lift lift)
 
     public void Request(int floor)
     {
-        _request = floor;
+        if (HasNoPendingCalls())
+            _request = floor;
+        else throw new InvalidOperationException();
     }
 
     public void Call(int floor)
@@ -48,7 +50,7 @@ public class LiftSystem(Lift lift)
             MoveLift();
         }
     }
-    
+
     private void MoveLift()
     {
         if (ShouldMoveDown()) lift.MoveDown();
