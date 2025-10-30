@@ -145,9 +145,18 @@ public class Lift(int initialFloor = 1)
             return;
         }
 
-        if (CurrentFloor > _request)
-            CurrentFloor--;
-        else
-            CurrentFloor++;
+        Move();
     }
+
+    private void Move()
+    {
+        if (CurrentFloor > _request)
+            MoveDown();
+        else
+            MoveUp();
+    }
+
+    private void MoveUp() => CurrentFloor++;
+
+    private void MoveDown() => CurrentFloor--;
 }
