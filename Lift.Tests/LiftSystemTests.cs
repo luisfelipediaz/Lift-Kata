@@ -134,4 +134,19 @@ public class LiftSystemUnitTests
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeFalse();
     }
+    
+    [Fact]
+    public void LiftSystem_MovesToCalledFloorAndOpenDoors()
+    {
+        var lift = new Lift();
+        var system = new LiftSystem(lift);
+
+        system.Call(3);
+        system.Tick();
+        system.Tick();
+        system.Tick();
+        
+        lift.CurrentFloor.Should().Be(3);
+        lift.AreDoorsOpen.Should().BeTrue();
+    }
 }
