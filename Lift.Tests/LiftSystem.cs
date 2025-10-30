@@ -37,6 +37,10 @@ public class LiftSystem(Lift lift)
             lift.OpenDoors();
             ClearCall();
         }
+        else if (lift.AreDoorsOpen)
+        {
+            lift.CloseDoors();
+        }
         else
         {
             lift.MoveUp();
