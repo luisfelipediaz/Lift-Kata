@@ -34,6 +34,17 @@ public class LiftUnitTests
 
         lift.CurrentFloor.Should().Be(3);
     }
+
+    [Fact]
+    public void Lift_CantMoveIfTheDoorsAreOpen()
+    {
+        var lift = new Lift();
+        lift.OpenDoors();
+        
+        var caller = () => lift.MoveTo(5);
+        
+        caller.Should().Throw<InvalidOperationException>();
+    }
 }
 
 public class Lift
