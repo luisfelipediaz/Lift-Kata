@@ -17,19 +17,26 @@ public class LiftSystem(Lift lift)
 
     public void Tick()
     {
-        if (_call != 0)
+        ProcessCalls();
+        ProcessRequests();
+    }
+
+    private void ProcessCalls()
+    {
+        if (HasNoPendingCalls()) return;
+
+        if (IsOnTheCalledFloor())
         {
-            if (lift.IsInFloor(_call))
-            {
-                lift.OpenDoors();
-                return;
-            }
-            else
-            {
-                lift.MoveUp();
-            }
+            lift.OpenDoors();
+            return;
         }
-        if (!HasPendingRequest()) return;
+
+        lift.MoveUp();
+    }
+
+    private void ProcessRequests()
+    {
+        if (HasNoPendingRequest()) return;
         if (IsOnTheRequestedFloor())
         {
             lift.OpenDoors();
@@ -41,16 +48,17 @@ public class LiftSystem(Lift lift)
             MoveLift();
         }
     }
-
-    public bool HasPendingRequest() => _request != 0;
-
+    
     private void MoveLift()
     {
         if (ShouldMoveDown()) lift.MoveDown();
         else lift.MoveUp();
     }
 
+    private bool HasNoPendingCalls() => _call == 0;
+    public bool HasNoPendingRequest() => _request == 0;
     private bool ShouldMoveDown() => lift.CurrentFloor > _request;
+    private bool IsOnTheCalledFloor() => lift.IsInFloor(_call);
     private bool IsOnTheRequestedFloor() => lift.IsInFloor(_request);
     private void ClearRequest() => _request = 0;
 }

@@ -58,7 +58,7 @@ public class LiftSystemUnitTests
 
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeTrue();
-        system.HasPendingRequest().Should().BeFalse();
+        (!system.HasNoPendingRequest()).Should().BeFalse();
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class LiftSystemUnitTests
 
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeFalse();
-        system.HasPendingRequest().Should().BeTrue();
+        (!system.HasNoPendingRequest()).Should().BeTrue();
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class LiftSystemUnitTests
 
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeFalse();
-        system.HasPendingRequest().Should().BeTrue();
+        (!system.HasNoPendingRequest()).Should().BeTrue();
     }
 
     [Fact]
@@ -117,7 +117,7 @@ public class LiftSystemUnitTests
         system.Tick();
         system.Tick();
 
-        system.HasPendingRequest().Should().BeFalse();
+        (!system.HasNoPendingRequest()).Should().BeFalse();
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeTrue();
     }
