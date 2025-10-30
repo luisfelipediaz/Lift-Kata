@@ -111,7 +111,7 @@ public class LiftSystemUnitTests
     {
         var lift = new Lift();
         var system = new LiftSystem(lift);
-        
+
         system.Request(2);
         system.Tick();
         system.Tick();
@@ -130,11 +130,11 @@ public class LiftSystemUnitTests
 
         system.Call(3);
         system.Tick();
-        
+
         lift.CurrentFloor.Should().Be(2);
         lift.AreDoorsOpen.Should().BeFalse();
     }
-    
+
     [Fact]
     public void LiftSystem_MovesToCalledFloorAndOpenDoors()
     {
@@ -145,8 +145,22 @@ public class LiftSystemUnitTests
         system.Tick();
         system.Tick();
         system.Tick();
-        
+
         lift.CurrentFloor.Should().Be(3);
         lift.AreDoorsOpen.Should().BeTrue();
+    }
+
+    [Fact]
+    public void LiftSystem_CantHandleARequest_While_HasACall()
+    {
+        var lift = new Lift();
+        var system = new LiftSystem(lift);
+        var caller = () => system.Request(9);
+        
+        system.Call(4);
+        system.Tick();
+        system.Tick();
+        
+        caller.Should().ThrowExactly<InvalidOperationException>();
     }
 }
