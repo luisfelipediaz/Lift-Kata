@@ -35,6 +35,7 @@ public class LiftSystem(Lift lift)
         if (IsOnTheCalledFloor())
         {
             lift.OpenDoors();
+            _call = 0;
             return;
         }
 
