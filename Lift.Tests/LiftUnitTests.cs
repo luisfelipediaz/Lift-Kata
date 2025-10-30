@@ -104,6 +104,20 @@ public class LiftUnitTests
         lift.CurrentFloor.Should().Be(6);
         lift.AreDoorsOpen.Should().BeFalse();
     }
+
+    [Fact]
+    public void Lift_FinishTheRequest_When_ArriveToDetinationAndOpenTheDoors()
+    {
+        var lift = new Lift();
+        
+        lift.Request(2);
+        lift.Tick();
+        lift.Tick();
+        
+        lift.CurrentFloor.Should().Be(2);
+        lift.AreDoorsOpen.Should().BeTrue();
+        lift.HasPendingRequest().Should().BeFalse();
+    }
 }
 
 public class Lift(int initialFloor = 1)
@@ -159,4 +173,9 @@ public class Lift(int initialFloor = 1)
     private void MoveUp() => CurrentFloor++;
 
     private void MoveDown() => CurrentFloor--;
+
+    public bool HasPendingRequest()
+    {
+        throw new NotImplementedException();
+    }
 }
