@@ -88,4 +88,21 @@ public class LiftSystemUnitTests
         lift.AreDoorsOpen.Should().BeFalse();
         system.HasPendingRequest().Should().BeTrue();
     }
+
+    [Fact]
+    public void LiftSystem_ShouldCloseTheDoorsBeforeToStartARequest()
+    {
+        var lift = new Lift();
+        var system = new LiftSystem(lift);
+        
+        system.Request(2);
+        system.Tick();
+        system.Tick();
+        system.Request(1);
+        system.Tick();
+        system.Tick();
+        
+        lift.CurrentFloor.Should().Be(1);
+        lift.AreDoorsOpen.Should().BeTrue();
+    }
 }
