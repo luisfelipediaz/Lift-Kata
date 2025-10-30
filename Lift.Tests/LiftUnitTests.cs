@@ -131,6 +131,19 @@ public class LiftUnitTests
         lift.AreDoorsOpen.Should().BeFalse();
         lift.HasPendingRequest().Should().BeTrue();
     }
+
+    [Fact]
+    public void Lift_ShouldNotFinishTheRequest_When_ArriveToTheRequestedFloorButDidNotOpenTheDoors()
+    {
+        var lift = new Lift();
+        
+        lift.Request(2);
+        lift.Tick();
+        
+        lift.CurrentFloor.Should().Be(2);
+        lift.AreDoorsOpen.Should().BeFalse();
+        lift.HasPendingRequest().Should().BeTrue();
+    }
 }
 
 public class Lift(int initialFloor = 1)
