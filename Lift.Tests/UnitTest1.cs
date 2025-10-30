@@ -19,6 +19,7 @@ public class Lift
 {
     public void OpenDoors()
     {
+        AreDoorsOpen = true;
     }
 
     public bool AreDoorsOpen { get; private set; }
