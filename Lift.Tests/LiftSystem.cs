@@ -11,6 +11,7 @@ public class LiftSystem(Lift lift)
 
     public void Tick()
     {
+        if (!HasPendingRequest()) return;
         if (IsOnTheRequestedFloor())
         {
             lift.OpenDoors();
