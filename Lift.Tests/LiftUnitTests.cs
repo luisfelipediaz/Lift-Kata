@@ -74,6 +74,8 @@ public class Lift
 
     public void MoveTo(int floor)
     {
+        if(floor < 0)
+            throw new ArgumentOutOfRangeException(nameof(floor));
         if(AreDoorsOpen)
             throw new InvalidOperationException();
         CurrentFloor = floor;
