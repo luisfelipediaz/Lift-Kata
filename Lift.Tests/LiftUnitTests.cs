@@ -111,5 +111,6 @@ public class Lift
 
     public void Tick()
     {
+        CurrentFloor = 2;
     }
 }
