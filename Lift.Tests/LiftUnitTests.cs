@@ -64,6 +64,8 @@ public class Lift
 
     public void MoveTo(int floor)
     {
+        if(AreDoorsOpen)
+            throw new InvalidOperationException();
         CurrentFloor = floor;
     }
 }
