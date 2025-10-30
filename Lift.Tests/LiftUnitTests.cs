@@ -21,7 +21,7 @@ public class LiftUnitTests
         lift.OpenDoors();
 
         lift.CloseDoors();
-        
+
         lift.AreDoorsOpen.Should().BeFalse();
     }
 
@@ -40,9 +40,9 @@ public class LiftUnitTests
     {
         var lift = new Lift();
         lift.OpenDoors();
-        
+
         var caller = () => lift.MoveTo(5);
-        
+
         caller.Should().Throw<InvalidOperationException>();
     }
 
@@ -50,9 +50,9 @@ public class LiftUnitTests
     public void Lift_CantMoveOutOfTheBoundries()
     {
         var lift = new Lift();
-        
+
         var caller = () => lift.MoveTo(-1);
-        
+
         caller.Should().Throw<ArgumentOutOfRangeException>();
     }
 
@@ -62,14 +62,26 @@ public class LiftUnitTests
         var lift = new Lift();
 
         var caller = () => lift.MoveTo(11);
-        
+
         caller.Should().Throw<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void Lift_MovesToRequestFloor()
+    {
+        var lift = new Lift();
+
+        lift.Request(2);
+        lift.Tick();
+        
+        lift.CurrentFloor.Should().Be(2);
+        lift.AreDoorsOpen.Should().BeFalse();
     }
 }
 
 public class Lift
 {
-    private const int MAX_FLOOR = 10;
+    private const int MaxFloor = 10;
     public bool AreDoorsOpen { get; private set; }
     public int CurrentFloor { get; private set; }
 
@@ -86,9 +98,18 @@ public class Lift
     public void MoveTo(int floor)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(floor);
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, MAX_FLOOR);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, MaxFloor);
         if (AreDoorsOpen)
             throw new InvalidOperationException();
         CurrentFloor = floor;
+    }
+
+    public void Request(int i)
+    {
+        
+    }
+
+    public void Tick()
+    {
     }
 }
