@@ -202,6 +202,6 @@ public class Lift(int initialFloor = 1)
 
     public bool HasPendingRequest()
     {
-        return _request != CurrentFloor;
+        return _request != CurrentFloor || !AreDoorsOpen;
     }
 }
