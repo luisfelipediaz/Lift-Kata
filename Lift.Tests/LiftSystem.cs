@@ -18,6 +18,7 @@ public class LiftSystem(Lift lift)
             return;
         }
 
+        lift.CloseDoors();
         Move();
     }
 
