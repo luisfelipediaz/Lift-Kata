@@ -20,6 +20,4 @@ public class Lift(int initialFloor = 1)
             throw new InvalidOperationException();
         CurrentFloor = floor;
     }
-
-    
 }

@@ -4,33 +4,33 @@ namespace Lift.Tests;
 
 public class LiftSystemUnitTests
 {
+    private readonly Lift _lift;
+    private readonly LiftSystem _system;
+
+    public LiftSystemUnitTests()
+    {
+        _lift = new Lift();
+        _system = new LiftSystem(_lift);
+    }
+
     [Fact]
     public void LiftSystem_MovesToRequestedFloor()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Request(2);
+        ExecuteLiftTicks(1);
 
-        system.Request(2);
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(2);
-        lift.AreDoorsOpen.Should().BeFalse();
+        _lift.CurrentFloor.Should().Be(2);
+        _lift.AreDoorsOpen.Should().BeFalse();
     }
 
     [Fact]
     public void LiftSystem_MovesToRequestedFloorAndOpenDoors()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Request(4);
+        ExecuteLiftTicks(4);
 
-        system.Request(4);
-        system.Tick();
-        system.Tick();
-        system.Tick();
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(4);
-        lift.AreDoorsOpen.Should().BeTrue();
+        _lift.CurrentFloor.Should().Be(4);
+        _lift.AreDoorsOpen.Should().BeTrue();
     }
 
     [Fact]
@@ -38,7 +38,6 @@ public class LiftSystemUnitTests
     {
         var lift = new Lift(initialFloor: 7);
         var system = new LiftSystem(lift);
-
         system.Request(1);
         system.Tick();
 
@@ -49,184 +48,127 @@ public class LiftSystemUnitTests
     [Fact]
     public void LiftSystem_FinishTheRequest_When_ArriveToDetinationAndOpenTheDoors()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Request(2);
+        ExecuteLiftTicks(2);
 
-        system.Request(2);
-        system.Tick();
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(2);
-        lift.AreDoorsOpen.Should().BeTrue();
-        (!system.HasNoPendingRequest()).Should().BeFalse();
+        _lift.CurrentFloor.Should().Be(2);
+        _lift.AreDoorsOpen.Should().BeTrue();
+        _system.HasNoPendingRequest().Should().BeTrue();
     }
 
     [Fact]
     public void LiftSystem_ShouldNotFinishTheRequest_When_DidntArriveToTheRequestedFloor()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Request(3);
+        ExecuteLiftTicks(1);
 
-        system.Request(3);
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(2);
-        lift.AreDoorsOpen.Should().BeFalse();
-        (!system.HasNoPendingRequest()).Should().BeTrue();
+        _lift.CurrentFloor.Should().Be(2);
+        _lift.AreDoorsOpen.Should().BeFalse();
+        _system.HasNoPendingRequest().Should().BeFalse();
     }
 
     [Fact]
     public void LiftSystem_ShouldNotFinishTheRequest_When_ArriveToTheRequestedFloorButDidNotOpenTheDoors()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Request(2);
+        ExecuteLiftTicks(1);
 
-        system.Request(2);
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(2);
-        lift.AreDoorsOpen.Should().BeFalse();
-        (!system.HasNoPendingRequest()).Should().BeTrue();
+        _lift.CurrentFloor.Should().Be(2);
+        _lift.AreDoorsOpen.Should().BeFalse();
+        _system.HasNoPendingRequest().Should().BeFalse();
     }
 
     [Fact]
     public void LiftSystem_ShouldCloseTheDoorsBeforeToStartARequest()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Request(2);
+        ExecuteLiftTicks(2);
+        _system.Request(1);
+        ExecuteLiftTicks(3);
 
-        system.Request(2);
-        system.Tick();
-        system.Tick();
-        system.Request(1);
-        system.Tick();
-        system.Tick();
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(1);
-        lift.AreDoorsOpen.Should().BeTrue();
+        _lift.CurrentFloor.Should().Be(1);
+        _lift.AreDoorsOpen.Should().BeTrue();
     }
 
     [Fact]
     public void LiftSystem_LiftSystem_ShouldCloseAndMoveInTwoDifferentMoments()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
-        
-        system.Request(2);
-        system.Tick();
-        system.Tick();
-        system.Request(5);
-        system.Tick();
-        system.Tick();
-        
-        lift.CurrentFloor.Should().Be(3);
-        lift.AreDoorsOpen.Should().BeFalse();
+        _system.Request(2);
+        ExecuteLiftTicks(2);
+        _system.Request(5);
+        ExecuteLiftTicks(2);
+        _lift.CurrentFloor.Should().Be(3);
+        _lift.AreDoorsOpen.Should().BeFalse();
     }
 
     [Fact]
     public void LiftSystem_ShouldDoNothing_When_FinishARequest_And_ThereIsNoMoreRequest()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Request(2);
+        ExecuteLiftTicks(3);
 
-        system.Request(2);
-        system.Tick();
-        system.Tick();
-        system.Tick();
-
-        (!system.HasNoPendingRequest()).Should().BeFalse();
-        lift.CurrentFloor.Should().Be(2);
-        lift.AreDoorsOpen.Should().BeTrue();
+        _system.HasNoPendingRequest().Should().BeTrue();
+        _lift.CurrentFloor.Should().Be(2);
+        _lift.AreDoorsOpen.Should().BeTrue();
     }
 
     [Fact]
     public void LiftSystem_MovesToCalledFloor()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Call(3);
+        _system.Tick();
 
-        system.Call(3);
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(2);
-        lift.AreDoorsOpen.Should().BeFalse();
+        _lift.CurrentFloor.Should().Be(2);
+        _lift.AreDoorsOpen.Should().BeFalse();
     }
 
     [Fact]
     public void LiftSystem_MovesToCalledFloorAndOpenDoors()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
+        _system.Call(3);
+        ExecuteLiftTicks(3);
 
-        system.Call(3);
-        system.Tick();
-        system.Tick();
-        system.Tick();
-
-        lift.CurrentFloor.Should().Be(3);
-        lift.AreDoorsOpen.Should().BeTrue();
+        _lift.CurrentFloor.Should().Be(3);
+        _lift.AreDoorsOpen.Should().BeTrue();
     }
 
     [Fact]
     public void LiftSystem_CantHandleARequest_While_HasACall()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
-        var caller = () => system.Request(9);
-        
-        system.Call(4);
-        system.Tick();
-        system.Tick();
-        
+        var caller = () => _system.Request(9);
+        _system.Call(4);
+        ExecuteLiftTicks(2);
         caller.Should().ThrowExactly<InvalidOperationException>();
     }
 
     [Fact]
     public void LiftSystem_CantHandlerACall_While_HasARequest()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
-        var caller = () => system.Call(7);
-        system.Request(4);
-        system.Tick();
-        system.Tick();
-        
+        var caller = () => _system.Call(7);
+        _system.Request(4);
+        ExecuteLiftTicks(2);
         caller.Should().ThrowExactly<InvalidOperationException>();
     }
 
     [Fact]
     public void LiftSystem_ShouldDoNothing_When_FinishACall_And_ThereIsNoMoreCalls()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
-        
-        system.Call(4);
-        system.Tick();
-        system.Tick();
-        system.Tick();
-        system.Tick();
-        system.Tick();
+        _system.Call(4);
+        ExecuteLiftTicks(5);
 
-        system.HasNoPendingCalls().Should().BeTrue();
-        lift.IsInFloor(4).Should().BeTrue();
+        _system.HasNoPendingCalls().Should().BeTrue();
+        _lift.IsInFloor(4).Should().BeTrue();
     }
 
     [Fact]
     public void LiftSystem_ShouldCloseTheDoorsBeforeToStartACall()
     {
-        var lift = new Lift();
-        var system = new LiftSystem(lift);
-        
-        system.Call(2);
-        system.Tick();
-        system.Tick();
-        system.Call(5);
-        system.Tick();
-        system.Tick();
-        
-        lift.IsInFloor(3).Should().BeTrue();
-        lift.AreDoorsOpen.Should().BeFalse();
+        _system.Call(2);
+        ExecuteLiftTicks(2);
+        _system.Call(5);
+        ExecuteLiftTicks(2);
+        _lift.IsInFloor(3).Should().BeTrue();
+        _lift.AreDoorsOpen.Should().BeFalse();
     }
 
     [Fact]
@@ -234,14 +176,19 @@ public class LiftSystemUnitTests
     {
         var lift = new Lift(initialFloor: 7);
         var system = new LiftSystem(lift);
-        
         system.Call(5);
         system.Tick();
         system.Tick();
         system.Tick();
 
         system.HasNoPendingCalls().Should().BeTrue();
-        lift.IsInFloor(5).Should().BeTrue();    
+        lift.IsInFloor(5).Should().BeTrue();
         lift.AreDoorsOpen.Should().BeTrue();
+    }
+    
+    private void ExecuteLiftTicks(int times)
+    {
+        for (var i = 0; i < times; i++)
+            _system.Tick();
     }
 }
