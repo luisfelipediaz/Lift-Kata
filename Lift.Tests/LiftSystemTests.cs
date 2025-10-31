@@ -47,7 +47,7 @@ public class LiftSystemUnitTests
     }
 
     [Fact]
-    public void LiftSystem_FinishTheRequest_When_ArriveToDetinationAndOpenTheDoors()
+    public void LiftSystem_FinishTheRequest_When_ArriveToDestinationAndOpenTheDoors()
     {
         _system.Request(2);
         ExecuteLiftTicks(2);
@@ -191,7 +191,7 @@ public class LiftSystemUnitTests
     [InlineData(11)]
     [InlineData(12)]
     [InlineData(16)]
-    public void Lift_CantMoveOutOfTheBoundriesAbove(int floor)
+    public void Lift_CantMoveOutOfTheBoundariesAbove(int floor)
     {
         var caller = () => _system.Request(floor);
 
@@ -202,7 +202,7 @@ public class LiftSystemUnitTests
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-2)]
-    public void Lift_CantMoveOutOfTheBoundriesBelow(int floor)
+    public void Lift_CantMoveOutOfTheBoundariesBelow(int floor)
     {
         var caller = () => _system.Request(floor);
 
@@ -250,7 +250,7 @@ public class LiftSystemUnitTests
     [InlineData(-1)]
     [InlineData(11)]
     [InlineData(12)]
-    public void Lift_CantBeCalledOutOfBoundries(int floor)
+    public void Lift_CantBeCalledOutOfBoundaries(int floor)
     {
         var caller = () => _system.Call(floor, Direction.Up);
         
