@@ -210,12 +210,23 @@ public class LiftSystemUnitTests
     }
 
     [Fact]
-    public void Lift_CantMoveInOtherDirectionThanWasCalled()
+    public void Lift_CantMoveInOtherDirectionThanWasCalled_When_DirectionIsUp()
     {
         _system.Call(2, Direction.Up);
         ExecuteLiftTicks(2);
 
         var caller = () => _system.Request(1);
+        
+        caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void Lift_CantMoveInOtherDirectionThanWasCalled_When_DirectionInDown()
+    {
+        _system.Call(5, Direction.Down);
+        ExecuteLiftTicks(5);
+
+        var caller = () => _system.Request(6);
         
         caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }

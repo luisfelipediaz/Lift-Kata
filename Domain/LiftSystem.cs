@@ -25,7 +25,7 @@ public class LiftSystem(Lift lift)
         _request = floor;
     }
 
-    public void Call(int floor, Direction i = 0)
+    public void Call(int floor, Direction direction = 0)
     {
         _minFloor = floor;
         Request(floor);
