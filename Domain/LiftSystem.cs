@@ -10,41 +10,47 @@ public enum Direction
 
 public class LiftSystem(Lift lift)
 {
+    private const int FloorOne = 1;
+    private const int FloorTen = 10;
     private int _request;
-    private int _minFloor = 1;
-    private int _maxFloor = 10;
+    private int _minFloor = FloorOne;
+    private int _maxFloor = FloorTen;
 
     public bool HasNoPendingCalls() => _request == 0;
     public bool HasNoPendingRequest() => _request == 0;
 
     public void Request(int floor)
     {
-        InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, _maxFloor);
-        ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
-
-        _minFloor = 1;
-        _maxFloor = 10;
-
+        ValidateBoundaries(floor);
+        ClearBoundaries();
         _request = floor;
     }
 
     public void Call(int floor, Direction direction)
     {
-        InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, _maxFloor);
-        ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
-        
+        ValidateBoundaries(floor);
         CreateDirectionConstraint(floor, direction);
-        
         _request = floor;
     }
-
+    
     public void Tick()
     {
         if (HasNoPendingRequest()) return;
 
         TickRequest();
+    }
+    
+    private void ClearBoundaries()
+    {
+        _minFloor = FloorOne;
+        _maxFloor = FloorTen;
+    }
+
+    private void ValidateBoundaries(int floor)
+    {
+        InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, _maxFloor);
+        ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
     }
     
     private void CreateDirectionConstraint(int floor, Direction direction)
