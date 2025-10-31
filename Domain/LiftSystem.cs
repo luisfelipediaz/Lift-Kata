@@ -12,22 +12,26 @@ public class LiftSystem(Lift lift)
 {
     private int _request;
     private int _minFloor = 1;
+    private int _maxFloor = 10;
 
     public bool HasNoPendingCalls() => _request == 0;
     public bool HasNoPendingRequest() => _request == 0;
 
     public void Request(int floor)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, 10);
-        ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
         InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, _maxFloor);
+        ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
 
         _request = floor;
     }
 
     public void Call(int floor, Direction direction = 0)
     {
-        _minFloor = floor;
+        if (direction == Direction.Up)
+            _minFloor = floor;
+        else
+            _maxFloor = floor;
         Request(floor);
     }
 
