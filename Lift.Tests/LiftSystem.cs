@@ -10,6 +10,7 @@ public class LiftSystem(Lift lift)
     public void Request(int floor)
     {
         ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, 10);
+        ArgumentOutOfRangeException.ThrowIfLessThan(floor, 1);
         if (HasNoPendingCalls())
             _request = floor;
         else throw new InvalidOperationException();
