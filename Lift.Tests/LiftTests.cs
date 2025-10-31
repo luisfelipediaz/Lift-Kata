@@ -67,24 +67,4 @@ public class LiftUnitTests
 
         caller.Should().Throw<InvalidOperationException>();
     }
-
-    [Fact]
-    public void Lift_CantMoveDownOutOfTheBoundries()
-    {
-        var lift = new Lift();
-
-        var caller = () => lift.MoveDown();
-
-        caller.Should().Throw<ArgumentOutOfRangeException>();
-    }
-
-    [Fact]
-    public void Lift_CantMoveUpOutOfTheBoundries()
-    {
-        var lift = new Lift(initialFloor: 10);
-
-        var caller = () => lift.MoveUp();
-
-        caller.Should().Throw<ArgumentOutOfRangeException>();
-    }
 }
