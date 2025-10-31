@@ -31,9 +31,12 @@ public class LiftSystem(Lift lift)
 
     public void Call(int floor, Direction direction)
     {
+        InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, _maxFloor);
+        ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
+        
         CreateDirectionConstraint(floor, direction);
         
-        InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
         _request = floor;
     }
 
