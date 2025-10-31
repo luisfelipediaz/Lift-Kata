@@ -1,4 +1,4 @@
-namespace Lift.Tests;
+namespace Domain;
 
 public class Lift(int initialFloor = 1)
 {

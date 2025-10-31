@@ -1,15 +1,16 @@
 using AwesomeAssertions;
+using Domain;
 
 namespace Lift.Tests;
 
 public class LiftSystemUnitTests
 {
-    private readonly Lift _lift;
+    private readonly Domain.Lift _lift;
     private readonly LiftSystem _system;
 
     public LiftSystemUnitTests()
     {
-        _lift = new Lift();
+        _lift = new Domain.Lift();
         _system = new LiftSystem(_lift);
     }
 
@@ -36,7 +37,7 @@ public class LiftSystemUnitTests
     [Fact]
     public void List_MovesToRequestedFloor_BelowToInitialFloor()
     {
-        var lift = new Lift(initialFloor: 7);
+        var lift = new Domain.Lift(initialFloor: 7);
         var system = new LiftSystem(lift);
         system.Request(1);
         system.Tick();
@@ -174,7 +175,7 @@ public class LiftSystemUnitTests
     [Fact]
     public void List_MovesToCalledFloor_BelowToInitialFloor()
     {
-        var lift = new Lift(initialFloor: 7);
+        var lift = new Domain.Lift(initialFloor: 7);
         var system = new LiftSystem(lift);
         system.Call(5);
         system.Tick();
@@ -207,7 +208,7 @@ public class LiftSystemUnitTests
 
         caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
-    
+
     private void ExecuteLiftTicks(int times)
     {
         for (var i = 0; i < times; i++)

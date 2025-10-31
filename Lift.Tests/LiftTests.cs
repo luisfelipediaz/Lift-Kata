@@ -7,7 +7,7 @@ public class LiftUnitTests
     [Fact]
     public void Lift_CanOpenDoors()
     {
-        var lift = new Lift();
+        var lift = new Domain.Lift();
 
         lift.OpenDoors();
 
@@ -17,7 +17,7 @@ public class LiftUnitTests
     [Fact]
     public void Lift_CanCloseDoors()
     {
-        var lift = new Lift();
+        var lift = new Domain.Lift();
         lift.OpenDoors();
 
         lift.CloseDoors();
@@ -29,7 +29,7 @@ public class LiftUnitTests
     [Fact]
     public void Lift_CanMoveUpOneFloorAtTime()
     {
-        var lift = new Lift();
+        var lift = new Domain.Lift();
 
         lift.MoveUp();
 
@@ -39,7 +39,7 @@ public class LiftUnitTests
     [Fact]
     public void Lift_CanMoveDownOneFloorAtTime()
     {
-        var lift = new Lift(initialFloor: 2);
+        var lift = new Domain.Lift(initialFloor: 2);
 
         lift.MoveDown();
 
@@ -49,7 +49,7 @@ public class LiftUnitTests
     [Fact]
     public void Lift_CantMoveUpIfTheDoorsAreOpen()
     {
-        var lift = new Lift();
+        var lift = new Domain.Lift();
         lift.OpenDoors();
 
         var caller = () => lift.MoveUp();
@@ -60,7 +60,7 @@ public class LiftUnitTests
     [Fact]
     public void Lift_CantMoveDownIfTheDoorsAreOpen()
     {
-        var lift = new Lift(initialFloor: 8);
+        var lift = new Domain.Lift(initialFloor: 8);
         lift.OpenDoors();
 
         var caller = () => lift.MoveDown();

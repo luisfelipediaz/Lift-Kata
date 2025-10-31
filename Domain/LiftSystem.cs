@@ -1,4 +1,6 @@
-namespace Lift.Tests;
+using Domain.Extensions;
+
+namespace Domain;
 
 public class LiftSystem(Lift lift)
 {
@@ -11,9 +13,9 @@ public class LiftSystem(Lift lift)
     {
         ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, 10);
         ArgumentOutOfRangeException.ThrowIfLessThan(floor, 1);
-        if (HasNoPendingCalls())
-            _request = floor;
-        else throw new InvalidOperationException();
+        InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
+
+        _request = floor;
     }
 
     public void Call(int floor)
@@ -24,19 +26,24 @@ public class LiftSystem(Lift lift)
     public void Tick()
     {
         if (HasNoPendingRequest()) return;
+
+        TickRequest();
+    }
+
+    private void TickRequest()
+    {
         if (IsOnTheRequestedFloor())
-        {
-            lift.OpenDoors();
-            ClearRequest();
-        }
+            FinishRequest();
         else if (lift.AreDoorsOpen)
-        {
             lift.CloseDoors();
-        }
         else
-        {
             MoveLift();
-        }
+    }
+
+    private void FinishRequest()
+    {
+        lift.OpenDoors();
+        ClearRequest();
     }
 
     private void MoveLift()
