@@ -116,7 +116,7 @@ public class LiftSystemUnitTests
     [Fact]
     public void LiftSystem_MovesToCalledFloor()
     {
-        _system.Call(3);
+        _system.Call(3, Direction.Up);
         _system.Tick();
 
         _lift.CurrentFloor.Should().Be(2);
@@ -126,7 +126,7 @@ public class LiftSystemUnitTests
     [Fact]
     public void LiftSystem_MovesToCalledFloorAndOpenDoors()
     {
-        _system.Call(3);
+        _system.Call(3, Direction.Up);
         ExecuteLiftTicks(3);
 
         _lift.CurrentFloor.Should().Be(3);
@@ -137,7 +137,7 @@ public class LiftSystemUnitTests
     public void LiftSystem_CantHandleARequest_While_HasACall()
     {
         var caller = () => _system.Request(9);
-        _system.Call(4);
+        _system.Call(4, Direction.Up);
         ExecuteLiftTicks(2);
         caller.Should().ThrowExactly<InvalidOperationException>();
     }
@@ -145,7 +145,7 @@ public class LiftSystemUnitTests
     [Fact]
     public void LiftSystem_CantHandlerACall_While_HasARequest()
     {
-        var caller = () => _system.Call(7);
+        var caller = () => _system.Call(7, Direction.Up);
         _system.Request(4);
         ExecuteLiftTicks(2);
         caller.Should().ThrowExactly<InvalidOperationException>();
@@ -154,7 +154,7 @@ public class LiftSystemUnitTests
     [Fact]
     public void LiftSystem_ShouldDoNothing_When_FinishACall_And_ThereIsNoMoreCalls()
     {
-        _system.Call(4);
+        _system.Call(4, Direction.Up);
         ExecuteLiftTicks(5);
 
         _system.HasNoPendingCalls().Should().BeTrue();
@@ -164,9 +164,9 @@ public class LiftSystemUnitTests
     [Fact]
     public void LiftSystem_ShouldCloseTheDoorsBeforeToStartACall()
     {
-        _system.Call(2);
+        _system.Call(2, Direction.Up);
         ExecuteLiftTicks(2);
-        _system.Call(5);
+        _system.Call(5, Direction.Up);
         ExecuteLiftTicks(2);
         _lift.IsInFloor(3).Should().BeTrue();
         _lift.AreDoorsOpen.Should().BeFalse();
@@ -177,7 +177,7 @@ public class LiftSystemUnitTests
     {
         var lift = new Domain.Lift(initialFloor: 7);
         var system = new LiftSystem(lift);
-        system.Call(5);
+        system.Call(5, Direction.Up);
         system.Tick();
         system.Tick();
         system.Tick();

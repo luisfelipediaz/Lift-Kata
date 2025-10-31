@@ -26,12 +26,9 @@ public class LiftSystem(Lift lift)
         _request = floor;
     }
 
-    public void Call(int floor, Direction direction = 0)
+    public void Call(int floor, Direction direction)
     {
-        if (direction == Direction.Up)
-            _minFloor = floor;
-        else
-            _maxFloor = floor;
+        CreateDirectionConstraint(floor, direction);
         Request(floor);
     }
 
@@ -40,6 +37,14 @@ public class LiftSystem(Lift lift)
         if (HasNoPendingRequest()) return;
 
         TickRequest();
+    }
+    
+    private void CreateDirectionConstraint(int floor, Direction direction)
+    {
+        if (direction == Direction.Up)
+            _minFloor = floor;
+        else
+            _maxFloor = floor;
     }
 
     private void TickRequest()
