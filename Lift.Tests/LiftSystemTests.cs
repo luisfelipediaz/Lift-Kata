@@ -245,6 +245,18 @@ public class LiftSystemUnitTests
         _lift.AreDoorsOpen.Should().BeTrue();
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(11)]
+    [InlineData(12)]
+    public void Lift_CantBeCalledOutOfBoundries(int floor)
+    {
+        var caller = () => _system.Call(floor, Direction.Up);
+        
+        caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
+    }
+
     private void ExecuteLiftTicks(int times)
     {
         for (var i = 0; i < times; i++)
