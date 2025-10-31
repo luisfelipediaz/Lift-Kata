@@ -186,10 +186,13 @@ public class LiftSystemUnitTests
         lift.AreDoorsOpen.Should().BeTrue();
     }
 
-    [Fact]
-    public void Lift_CantMoveOutOfTheBoundriesAbove()
+    [Theory]
+    [InlineData(11)]
+    [InlineData(12)]
+    [InlineData(16)]
+    public void Lift_CantMoveOutOfTheBoundriesAbove(int floor)
     {
-        var caller = () => _system.Request(11);
+        var caller = () => _system.Request(floor);
 
         caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
