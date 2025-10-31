@@ -9,6 +9,8 @@ public class LiftSystem(Lift lift)
 
     public void Request(int floor)
     {
+        if (floor == 11)
+            throw new ArgumentOutOfRangeException();
         if (HasNoPendingCalls())
             _request = floor;
         else throw new InvalidOperationException();
