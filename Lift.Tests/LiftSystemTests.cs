@@ -196,6 +196,14 @@ public class LiftSystemUnitTests
 
         caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
+
+    [Fact]
+    public void Lift_CantMoveOutOfTheBoundriesBelow()
+    {
+        var caller = () => _system.Request(0);
+
+        caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
+    }
     
     private void ExecuteLiftTicks(int times)
     {
