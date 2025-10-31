@@ -185,6 +185,14 @@ public class LiftSystemUnitTests
         lift.IsInFloor(5).Should().BeTrue();
         lift.AreDoorsOpen.Should().BeTrue();
     }
+
+    [Fact]
+    public void Lift_CantMoveOutOfTheBoundriesAbove()
+    {
+        var caller = () => _system.Request(11);
+
+        caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
+    }
     
     private void ExecuteLiftTicks(int times)
     {
