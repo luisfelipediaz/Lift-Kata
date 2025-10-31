@@ -209,6 +209,17 @@ public class LiftSystemUnitTests
         caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
 
+    [Fact]
+    public void Lift_CantMoveInOtherDirectionThanWasCalled()
+    {
+        _system.Call(2, Direction.Up);
+        ExecuteLiftTicks(2);
+
+        var caller = () => _system.Request(1);
+        
+        caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
+    }
+
     private void ExecuteLiftTicks(int times)
     {
         for (var i = 0; i < times; i++)

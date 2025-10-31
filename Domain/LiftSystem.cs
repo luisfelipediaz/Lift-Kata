@@ -2,6 +2,12 @@ using Domain.Extensions;
 
 namespace Domain;
 
+public enum Direction
+{
+    Up = 'U',
+    Down = 'D'
+}
+
 public class LiftSystem(Lift lift)
 {
     private int _request;
@@ -18,7 +24,7 @@ public class LiftSystem(Lift lift)
         _request = floor;
     }
 
-    public void Call(int floor)
+    public void Call(int floor, Direction i = 0)
     {
         Request(floor);
     }
