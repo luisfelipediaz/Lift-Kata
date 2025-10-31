@@ -23,13 +23,18 @@ public class LiftSystem(Lift lift)
         ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, _maxFloor);
         ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
 
+        _minFloor = 1;
+        _maxFloor = 10;
+
         _request = floor;
     }
 
     public void Call(int floor, Direction direction)
     {
         CreateDirectionConstraint(floor, direction);
-        Request(floor);
+        
+        InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
+        _request = floor;
     }
 
     public void Tick()
