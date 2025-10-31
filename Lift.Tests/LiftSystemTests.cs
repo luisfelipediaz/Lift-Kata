@@ -231,6 +231,20 @@ public class LiftSystemUnitTests
         caller.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
 
+    [Fact]
+    public void Lift_ShouldClearCallConstraintWhenItFinish()
+    {
+        _system.Call(2, Direction.Up);
+        ExecuteLiftTicks(2);
+        _system.Request(3);
+        ExecuteLiftTicks(3);
+        _system.Request(1);
+        ExecuteLiftTicks(4);
+        
+        _lift.CurrentFloor.Should().Be(1);
+        _lift.AreDoorsOpen.Should().BeTrue();
+    }
+
     private void ExecuteLiftTicks(int times)
     {
         for (var i = 0; i < times; i++)
