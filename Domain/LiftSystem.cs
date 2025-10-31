@@ -11,6 +11,7 @@ public enum Direction
 public class LiftSystem(Lift lift)
 {
     private int _request;
+    private int _minFloor = 1;
 
     public bool HasNoPendingCalls() => _request == 0;
     public bool HasNoPendingRequest() => _request == 0;
@@ -18,7 +19,7 @@ public class LiftSystem(Lift lift)
     public void Request(int floor)
     {
         ArgumentOutOfRangeException.ThrowIfGreaterThan(floor, 10);
-        ArgumentOutOfRangeException.ThrowIfLessThan(floor, 1);
+        ArgumentOutOfRangeException.ThrowIfLessThan(floor, _minFloor);
         InvalidOperationException.ThrowIfFalse(HasNoPendingCalls());
 
         _request = floor;
@@ -26,6 +27,7 @@ public class LiftSystem(Lift lift)
 
     public void Call(int floor, Direction i = 0)
     {
+        _minFloor = floor;
         Request(floor);
     }
 
